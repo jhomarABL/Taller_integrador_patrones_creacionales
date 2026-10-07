@@ -1,0 +1,56 @@
+# Compiled Java files
+*.class
+
+# Package Files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+*.swp
+*.swo
+*~
+
+# Build directories
+build/
+target/
+dist/
+bin/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Gradle
+.gradle/
+gradle-app.setting
+
+# Maven
+.m2/
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+logs/
+
+# Node (if any frontend is included)
+node_modules/
+npm-debug.log
+
+# Misc
+.classpath
+.project
+.settings/
+*.class
