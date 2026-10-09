@@ -33,8 +33,8 @@ Construir un sistema de pedidos que permita:
 | Entregable | Ubicación |
 |---|---|
 | Código fuente del proyecto | [`src/`](src/) |
-| Diagrama de clases con patrones identificados | Sección **Diagrama de clases** |
-| Justificación escrita | Sección **Justificación de los patrones** |
+| Diagrama de clases con patrones identificados | [Sección **Diagrama de clases**](https://github.com/jhomarABL/Taller_integrador_patrones_creacionales#diagrama-de-clases) |
+| Justificación escrita | [Sección **Justificación de los patrones**](https://github.com/jhomarABL/Taller_integrador_patrones_creacionales#justificaci%C3%B3n-de-los-patrones) |
 | Captura de `App` con Nequi habilitado | [`docs/evidencias/salida-app.png`](docs/evidencias/salida-app.png) |
 | Reto opcional Prototype | [`src/AppBonus.java`](src/AppBonus.java) |
 
