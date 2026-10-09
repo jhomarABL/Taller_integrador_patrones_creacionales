@@ -153,12 +153,12 @@ classDiagram
 
     class App {
         <<Aplicacion principal>>
-        +main(String[] args)$ void
+        +main(String[] args) void
     }
 
     class AppBonus {
         <<Prueba Prototype>>
-        +main(String[] args)$ void
+        +main(String[] args) void
     }
 
     class TipoEntrega {
@@ -182,17 +182,17 @@ classDiagram
         <<Singleton>>
         -int contador
         -GeneradorConsecutivo()
-        +obtenerInstancia()$ GeneradorConsecutivo
+        +obtenerInstancia() GeneradorConsecutivo
         +siguiente() String
     }
 
     class ContenedorInstancia {
         <<Clase interna estatica>>
-        -INSTANCIA$ GeneradorConsecutivo
+        -GeneradorConsecutivo INSTANCIA
     }
 
     class Pedido {
-        <<Producto Builder / Prototype>>
+        <<Producto Builder y Prototype>>
         -String id
         -String cliente
         -TipoEntrega tipoEntrega
@@ -215,7 +215,7 @@ classDiagram
         +mostrarResumen() void
         +clonar() Pedido
         +agregarItem(ItemPedido item) void
-        -formatearMonto(double monto)$ String
+        -formatearMonto(double monto) String
     }
 
     class Builder {
@@ -239,14 +239,14 @@ classDiagram
     }
 
     class PasarelaPago {
-        <<interface / Producto>>
+        <<interface>>
         +nombre() String
         +cobrar(double monto) boolean
     }
 
     class PasarelaTarjeta {
         <<Producto concreto>>
-        -double LIMITE$
+        -double LIMITE
         +nombre() String
         +cobrar(double monto) boolean
     }
@@ -265,7 +265,7 @@ classDiagram
 
     class PasarelaNequi {
         <<Producto concreto>>
-        -double LIMITE$
+        -double LIMITE
         +nombre() String
         +cobrar(double monto) boolean
     }
@@ -300,7 +300,6 @@ classDiagram
         #crearPasarela() PasarelaPago
     }
 
-    %% Aplicaciones
     App ..> GeneradorConsecutivo : comprueba Singleton
     App ..> Builder : construye pedidos
     App ..> ItemPedido : crea items
@@ -313,23 +312,19 @@ classDiagram
     AppBonus ..> ItemPedido : crea items
     AppBonus ..> Pedido : clona y modifica
 
-    %% Singleton
-    GeneradorConsecutivo +-- ContenedorInstancia : contiene
+    GeneradorConsecutivo ..> ContenedorInstancia : clase interna
     ContenedorInstancia --> GeneradorConsecutivo : mantiene instancia unica
 
-    %% Builder
-    Pedido +-- Builder : clase interna
+    Pedido ..> Builder : clase interna
     Builder ..> Pedido : construye
     Builder ..> GeneradorConsecutivo : solicita consecutivo
     Builder --> TipoEntrega : configura
-    Builder o-- "0..*" ItemPedido : acumula
+    Builder o-- ItemPedido : acumula items
 
-    %% Pedido
-    Pedido --> "1" TipoEntrega : utiliza
-    Pedido *-- "1..*" ItemPedido : contiene copia
+    Pedido --> TipoEntrega : utiliza
+    Pedido *-- ItemPedido : contiene
     Pedido ..> Pedido : clonar
 
-    %% Factory Method
     ProcesadorPago ..> Pedido : procesa
     ProcesadorPago ..> PasarelaPago : crea y utiliza
 
@@ -338,18 +333,16 @@ classDiagram
     ProcesadorPago <|-- ProcesadorEfectivo
     ProcesadorPago <|-- ProcesadorNequi
 
-    %% Productos del Factory Method
     PasarelaPago <|.. PasarelaTarjeta
     PasarelaPago <|.. PasarelaPSE
     PasarelaPago <|.. PasarelaEfectivo
     PasarelaPago <|.. PasarelaNequi
 
-    %% Creacion de productos concretos
     ProcesadorTarjeta ..> PasarelaTarjeta : crea
     ProcesadorPSE ..> PasarelaPSE : crea
     ProcesadorEfectivo ..> PasarelaEfectivo : crea
     ProcesadorNequi ..> PasarelaNequi : crea
-    
+
 ```
 
 ## Justificación de los patrones
