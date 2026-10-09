@@ -381,13 +381,7 @@ No es necesario modificar `ProcesadorPago` ni las pasarelas y procesadores exist
 
 ### Programa principal
 
-Guardar una captura real de la terminal en:
 
-```text
-docs/evidencias/salida-app.png
-```
-
-La captura debe mostrar la ejecución de `App` con el punto 4 activado.
 
 ![Ejecución de App con Nequi](docs/evidencias/salida-app.png)
 
