@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class Pedido {
+public class Pedido implements PrototipoPedido{
 
     private final String id;
     private final String cliente;
@@ -93,6 +93,8 @@ public class Pedido {
         return String.format(Locale.US, "%.0f", monto);
     }
 
+    
+    @Override 
     public Pedido clonar() {
         Builder copia = new Builder()
                 .conCliente(cliente)

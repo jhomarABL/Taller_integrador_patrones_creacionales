@@ -218,6 +218,11 @@ classDiagram
         -formatearMonto(double monto) String
     }
 
+     class PrototipoPedido {
+        <<interface>>
+        +clonar() Pedido
+    }
+
     class Builder {
         <<Builder interno estatico>>
         -String cliente
@@ -310,7 +315,8 @@ classDiagram
 
     AppBonus ..> Builder : construye original
     AppBonus ..> ItemPedido : crea items
-    AppBonus ..> Pedido : clona y modifica
+    AppBonus ..> PrototipoPedido : utiliza
+    AppBonus ..> Pedido : recibe clon
 
     GeneradorConsecutivo ..> ContenedorInstancia : clase interna
     ContenedorInstancia --> GeneradorConsecutivo : mantiene instancia unica
@@ -323,7 +329,7 @@ classDiagram
 
     Pedido --> TipoEntrega : utiliza
     Pedido *-- ItemPedido : contiene
-    Pedido ..> Pedido : clonar
+    PrototipoPedido <|.. Pedido : implementa
 
     ProcesadorPago ..> Pedido : procesa
     ProcesadorPago ..> PasarelaPago : crea y utiliza
