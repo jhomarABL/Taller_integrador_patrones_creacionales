@@ -28,6 +28,13 @@ Construir un sistema de pedidos que permita:
 - Agregar medios de pago sin modificar la lógica existente.
 - Repetir un pedido sin alterar el original.
 
+## Problemas identificados
+Antes de escribir la solución, se notaron los siguientes tres problemas concretos:
+
+- Se está implementando un contador dentro de cada clase siendo que se puede referenciar a un mismo contador 
+- Dentro del constructor se están especificando muchos atributos directamente y no se identifica cuales son obligatorios y cuales no.
+- El crear un nuevo medio de pago nos obliga estár en constante modificación del codigo en lugar solo agregar el medio de pago directamente.
+
 ## Entregables
 
 | Entregable | Ubicación |
