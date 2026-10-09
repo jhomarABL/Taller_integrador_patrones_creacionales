@@ -149,25 +149,50 @@ El diagrama representa la solución con Singleton mediante una clase contenedora
 
 ```mermaid
 classDiagram
+    direction TB
+
     class App {
-        +main(String[] args) void
+        <<Aplicacion principal>>
+        +main(String[] args)$ void
+    }
+
+    class AppBonus {
+        <<Prueba Prototype>>
+        +main(String[] args)$ void
+    }
+
+    class TipoEntrega {
+        <<enumeration>>
+        RECOGER
+        DOMICILIO
+    }
+
+    class ItemPedido {
+        -String nombre
+        -double precioUnitario
+        -int cantidad
+        +ItemPedido(String nombre, double precioUnitario, int cantidad)
+        +getNombre() String
+        +getPrecioUnitario() double
+        +getCantidad() int
+        +getSubtotal() double
     }
 
     class GeneradorConsecutivo {
         <<Singleton>>
         -int contador
         -GeneradorConsecutivo()
-        +obtenerInstancia() GeneradorConsecutivo
+        +obtenerInstancia()$ GeneradorConsecutivo
         +siguiente() String
     }
 
     class ContenedorInstancia {
         <<Clase interna estatica>>
-        -GeneradorConsecutivo INSTANCIA
+        -INSTANCIA$ GeneradorConsecutivo
     }
 
     class Pedido {
-        <<Producto Builder y Prototype>>
+        <<Producto Builder / Prototype>>
         -String id
         -String cliente
         -TipoEntrega tipoEntrega
@@ -178,17 +203,33 @@ classDiagram
         -double propina
         -Pedido(Builder builder, String id)
         +getId() String
+        +getCliente() String
+        +getTipoEntrega() TipoEntrega
+        +getDireccion() String
+        +getItems() List~ItemPedido~
+        +getNotas() String
+        +getCupon() int
+        +getPropina() double
         +calcularSubtotal() double
         +calcularTotal() double
         +mostrarResumen() void
         +clonar() Pedido
         +agregarItem(ItemPedido item) void
+        -formatearMonto(double monto)$ String
     }
 
     class Builder {
         <<Builder interno estatico>>
+        -String cliente
+        -TipoEntrega tipoEntrega
+        -String direccion
+        -List~ItemPedido~ items
+        -String notas
+        -int cupon
+        -double propina
+        +Builder()
         +conCliente(String cliente) Builder
-        +conTipoEntrega(TipoEntrega tipo) Builder
+        +conTipoEntrega(TipoEntrega tipoEntrega) Builder
         +conDireccion(String direccion) Builder
         +agregarItem(ItemPedido item) Builder
         +conNotas(String notas) Builder
@@ -197,56 +238,15 @@ classDiagram
         +construir() Pedido
     }
 
-    class ItemPedido {
-        -String nombre
-        -double precioUnitario
-        -int cantidad
-        +getNombre() String
-        +getPrecioUnitario() double
-        +getCantidad() int
-        +getSubtotal() double
-    }
-
-    class TipoEntrega {
-        <<enumeration>>
-        RECOGER
-        DOMICILIO
-    }
-
-    class ProcesadorPago {
-        <<Creador abstracto Factory Method>>
-        +procesar(Pedido pedido) void
-        #crearPasarela() PasarelaPago
-    }
-
-    class ProcesadorTarjeta {
-        <<Creador concreto>>
-        #crearPasarela() PasarelaPago
-    }
-
-    class ProcesadorPSE {
-        <<Creador concreto>>
-        #crearPasarela() PasarelaPago
-    }
-
-    class ProcesadorEfectivo {
-        <<Creador concreto>>
-        #crearPasarela() PasarelaPago
-    }
-
-    class ProcesadorNequi {
-        <<Creador concreto>>
-        #crearPasarela() PasarelaPago
-    }
-
     class PasarelaPago {
-        <<interface>>
+        <<interface / Producto>>
         +nombre() String
         +cobrar(double monto) boolean
     }
 
     class PasarelaTarjeta {
         <<Producto concreto>>
+        -double LIMITE$
         +nombre() String
         +cobrar(double monto) boolean
     }
@@ -265,25 +265,72 @@ classDiagram
 
     class PasarelaNequi {
         <<Producto concreto>>
+        -double LIMITE$
         +nombre() String
         +cobrar(double monto) boolean
     }
 
-    App ..> Builder : configura
-    App ..> ProcesadorPago : utiliza
+    class ProcesadorPago {
+        <<Creador abstracto>>
+        +procesar(Pedido pedido) void
+        #crearPasarela() PasarelaPago
+    }
 
-    GeneradorConsecutivo +-- ContenedorInstancia : clase interna
-    ContenedorInstancia --> GeneradorConsecutivo : instancia unica
+    class ProcesadorTarjeta {
+        <<Creador concreto>>
+        +ProcesadorTarjeta()
+        #crearPasarela() PasarelaPago
+    }
 
+    class ProcesadorPSE {
+        <<Creador concreto>>
+        +ProcesadorPSE()
+        #crearPasarela() PasarelaPago
+    }
+
+    class ProcesadorEfectivo {
+        <<Creador concreto>>
+        +ProcesadorEfectivo()
+        #crearPasarela() PasarelaPago
+    }
+
+    class ProcesadorNequi {
+        <<Creador concreto>>
+        +ProcesadorNequi()
+        #crearPasarela() PasarelaPago
+    }
+
+    %% Aplicaciones
+    App ..> GeneradorConsecutivo : comprueba Singleton
+    App ..> Builder : construye pedidos
+    App ..> ItemPedido : crea items
+    App ..> ProcesadorTarjeta : instancia
+    App ..> ProcesadorPSE : instancia
+    App ..> ProcesadorEfectivo : instancia
+    App ..> ProcesadorNequi : instancia
+
+    AppBonus ..> Builder : construye original
+    AppBonus ..> ItemPedido : crea items
+    AppBonus ..> Pedido : clona y modifica
+
+    %% Singleton
+    GeneradorConsecutivo +-- ContenedorInstancia : contiene
+    ContenedorInstancia --> GeneradorConsecutivo : mantiene instancia unica
+
+    %% Builder
     Pedido +-- Builder : clase interna
     Builder ..> Pedido : construye
     Builder ..> GeneradorConsecutivo : solicita consecutivo
+    Builder --> TipoEntrega : configura
+    Builder o-- "0..*" ItemPedido : acumula
 
-    Pedido *-- "1..*" ItemPedido : contiene
-    Pedido --> TipoEntrega
-    Pedido ..> Builder : clonar mediante Builder
+    %% Pedido
+    Pedido --> "1" TipoEntrega : utiliza
+    Pedido *-- "1..*" ItemPedido : contiene copia
+    Pedido ..> Pedido : clonar
 
-    ProcesadorPago ..> Pedido : calcula total
+    %% Factory Method
+    ProcesadorPago ..> Pedido : procesa
     ProcesadorPago ..> PasarelaPago : crea y utiliza
 
     ProcesadorPago <|-- ProcesadorTarjeta
@@ -291,15 +338,18 @@ classDiagram
     ProcesadorPago <|-- ProcesadorEfectivo
     ProcesadorPago <|-- ProcesadorNequi
 
+    %% Productos del Factory Method
     PasarelaPago <|.. PasarelaTarjeta
     PasarelaPago <|.. PasarelaPSE
     PasarelaPago <|.. PasarelaEfectivo
     PasarelaPago <|.. PasarelaNequi
 
+    %% Creacion de productos concretos
     ProcesadorTarjeta ..> PasarelaTarjeta : crea
     ProcesadorPSE ..> PasarelaPSE : crea
     ProcesadorEfectivo ..> PasarelaEfectivo : crea
     ProcesadorNequi ..> PasarelaNequi : crea
+    
 ```
 
 ## Justificación de los patrones
