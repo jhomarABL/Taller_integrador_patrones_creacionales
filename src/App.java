@@ -68,11 +68,11 @@ public class App {
         pse.procesar(p3);       // PSE si lo aprueba
 
         // INICIO PUNTO 4 (descomenta cuando hayas creado ProcesadorNequi)
-        // System.out.println();
-        // System.out.println("=== 4. Extension sin modificar codigo existente ===");
-        // ProcesadorPago nequi = new ProcesadorNequi();
-        // nequi.procesar(p2);
-        // nequi.procesar(p3);
+         System.out.println();
+         System.out.println("=== 4. Extension sin modificar codigo existente ===");
+         ProcesadorPago nequi = new ProcesadorNequi();
+         nequi.procesar(p2);
+         nequi.procesar(p3);
         // FIN PUNTO 4
         System.out.println("=== Reto extra: Prototype (repetir pedido) ===");
 
