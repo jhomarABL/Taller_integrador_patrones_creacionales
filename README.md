@@ -6,9 +6,9 @@ Mini sistema de pedidos a domicilio desarrollado en Java. Integra los patrones S
 
 | Integrante | Código |
 |---|---|
-| [Jose Miguel Bueno Martinez] | [20251020093] |
-| [Jhomar Armando Bojaca Landinez] | [20211020130] |
-| [Tomás Torres Morales] | [20251020167] |
+| Jose Miguel Bueno Martinez | 20251020093 |
+| Jhomar Armando Bojaca Landinez | 20211020130 |
+| Tomás Torres Morales | 20251020167 |
 
 
 
